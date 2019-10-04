@@ -18,7 +18,7 @@
 ##
 # Imports python modules
 from os import listdir
-
+import os
 # TODO 2: Define get_pet_labels function below please be certain to replace None
 #       in the return statement with results_dic dictionary that you create 
 #       with this function
@@ -42,4 +42,44 @@ def get_pet_labels(image_dir):
     """
     # Replace None with the results_dic dictionary that you created with this
     # function
-    return None
+    
+    in_files = listdir(image_dir)
+    
+    results_dic = dict()
+    
+    for idx in range(0, len(in_files), 1):
+        if in_files[idx][0] != ".":
+            pet_label = get_label(in_files[idx])
+            
+            if in_files[idx] not in results_dic:
+              results_dic[in_files[idx]] = [pet_label]
+              
+            else:
+               print("** Warning: Duplicate files exist in directory:", 
+                     in_files[idx])
+            
+    return results_dic
+
+def get_label(pet_image):
+    # Sets string to lower case letters
+    low_pet_image = pet_image.lower()
+
+    # Splits lower case string by _ to break into words 
+    word_list_pet_image = os.path.splitext(low_pet_image)[0].split("_")
+
+    # Create pet_name starting as empty string
+    pet_name = ""
+
+    # Loops to check if word in pet name is only
+    # alphabetic characters - if true append word
+    # to pet_name separated by trailing space 
+    for word in word_list_pet_image:
+        print(word)
+        if word.isalpha():
+            pet_name += word + " "
+
+    # Strip off starting/trailing whitespace characters 
+    pet_name = pet_name.strip()
+    
+    return pet_name
+    
